@@ -22,7 +22,8 @@ pub fn leak_buffer(input: &[u8]) -> usize {
                 count += 1;
             }
         }
-        // утечка: не вызываем Box::from_raw(raw);
+        // See [the issue](https://github.com/noxlovette/yp-module-5/issues/4) for the initial state
+        let _ = Box::from_raw(raw);
     }
     count
 }

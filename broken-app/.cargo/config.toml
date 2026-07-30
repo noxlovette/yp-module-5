@@ -1,0 +1,5 @@
+[build]
+rustflags = ["-Zsanitizer=address"]
+
+[unstable]
+build-std = ["std", "panic_abort"]

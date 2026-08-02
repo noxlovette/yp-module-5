@@ -54,16 +54,17 @@
 
 ## Корректность
 
-| Проверка           | Команда                                                                                                        | Результат                  |
-| ------------------ | -------------------------------------------------------------------------------------------------------------- | -------------------------- |
-| `cargo test`       | `cargo test`                                                                                                   | 9/9 ok                     |
-| Miri (UB-детектор) | `cargo +nightly miri test`                                                                                     | 9/9 ok, без предупреждений |
-| AddressSanitizer   | `RUSTFLAGS="-Z sanitizer=address" cargo +nightly test --target aarch64-apple-darwin`                           | 9/9 ok                     |
-| ThreadSanitizer    | `RUSTFLAGS="-Z sanitizer=thread" cargo +nightly test --target aarch64-apple-darwin -Z build-std --lib --tests` | 9/9 ok*                    |
+| Проверка           | Команда                                                                                                        | Результат                             |
+| ------------------ | -------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| `cargo test`       | `cargo test`                                                                                                   | 10/10 ok                              |
+| Miri (UB-детектор) | `cargo +nightly miri test`                                                                                     | 10/10 ok, без предупреждений          |
+| AddressSanitizer   | `RUSTFLAGS="-Z sanitizer=address" cargo +nightly test --target aarch64-apple-darwin`                           | 10/10 ok                              |
+| ThreadSanitizer    | `RUSTFLAGS="-Z sanitizer=thread" cargo +nightly test --target aarch64-apple-darwin -Z build-std --lib --tests` | 10/10 ok, без предупреждений о гонках |
 
-\* TSan не покрывает намеренную гонку данных в `concurrency::race_increment` — ни один тест
-её не вызывает (это отдельный незакрытый дефект вне рамок Шага 6/7, а не регрессия от
-оптимизаций горячих путей).
+На момент первой прогонки Шага 7 TSan «чисто» проходил только потому, что ни один тест
+не вызывал `concurrency::race_increment` — гонка данных была задокументирована как
+отдельный незакрытый дефект. Позже был добавлен тест `race_increment_is_correct`
+(`tests/integration.rs`) и сама гонка исправлена — подробности в разделе «Шаг 8» ниже.
 
 Все три оптимизированные функции (`fast_fib`, `fast_dedup`, `leak_buffer`) прошли и
 Miri, и ASan без единого предупреждения — значит новые версии не внесли UB, out-of-bounds
@@ -108,3 +109,45 @@ Miri, и ASan без единого предупреждения — значи�
 - `leak_buffer` не входит в бенчмарки (не был профилирован как горячий путь), но
   устранённая аллокация+копия проверена через Miri/ASan — UB не внесено, число
   аллокаций на вызов снизилось с 1 (heap) до 0.
+
+# Шаг 8 — Гонка данных в `concurrency::race_increment`: обнаружена и исправлена
+
+Дефект #6 из README (гонка данных в потоковом модуле) на момент Шага 7 оставался
+незакрытым: `static mut COUNTER: u64` инкрементировался из нескольких потоков без
+синхронизации, но ни один тест не вызывал `race_increment`, поэтому ни `cargo test`,
+ни ThreadSanitizer его не ловили.
+
+## Как дефект был найден
+
+Добавлен тест `race_increment_is_correct` в `tests/integration.rs`:
+
+```rust
+#[test]
+fn race_increment_is_correct() {
+    let total = concurrency::race_increment(1_000, 4);
+    assert_eq!(total, 4_000);
+}
+```
+
+До фикса при повторных запусках (`cargo test race_increment_is_correct`, 5 прогонов)
+тест падал примерно в 40% случаев — часть инкрементов терялась из-за одновременной
+неатомарной записи `COUNTER += 1` в разных потоках. Это подтвердило гонку эмпирически,
+не только по коду.
+
+## Исправление
+
+`static mut COUNTER: u64` заменён на `static COUNTER: AtomicU64`, все обращения — через
+`fetch_add` / `load` / `store` с `Ordering::SeqCst`. `unsafe` в модуле `concurrency`
+больше не используется.
+
+## Проверка после исправления
+
+| Проверка                                           | Результат                                                                       |
+| -------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `cargo test race_increment_is_correct` × 24 подряд | 24/24 ok, ни одного падения (было ~40% падений)                                 |
+| `cargo test` (весь пакет)                          | 10/10 ok                                                                        |
+| Miri                                               | 10/10 ok, без предупреждений                                                    |
+| ThreadSanitizer (`-Z build-std --lib --tests`)     | 10/10 ok, без предупреждений о гонках (ранее код просто не исполнялся под TSan) |
+
+Итог: дефект #6 закрыт, все 6 намеренных дефектов из README исправлены и покрыты
+тестами/санитайзерами.

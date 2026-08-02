@@ -1,4 +1,4 @@
-use broken_app::{algo, leak_buffer, normalize, sum_even};
+use broken_app::{algo, concurrency, leak_buffer, normalize, sum_even};
 
 #[test]
 fn sums_even_numbers() {
@@ -27,4 +27,10 @@ fn fib_small_numbers() {
 #[test]
 fn normalize_simple() {
     assert_eq!(normalize(" Hello World "), "helloworld");
+}
+
+#[test]
+fn race_increment_is_correct() {
+    let total = concurrency::race_increment(1_000, 4);
+    assert_eq!(total, 4_000);
 }

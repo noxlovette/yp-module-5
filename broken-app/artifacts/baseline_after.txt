@@ -1,0 +1,12 @@
+   Compiling broken-app v0.1.0 (/Volumes/Thor/DEV/yp-module-5/broken-app)
+    Finished `bench` profile [optimized + debuginfo] target(s) in 0.58s
+     Running benches/baseline.rs (target/release/deps/baseline-62eb1cd6710f5163)
+sum_even: 15.916µs
+fast_fib: 41ns
+fast_dedup: 214.958µs
+sum_even: 16.625µs
+fast_fib: 42ns
+fast_dedup: 168.042µs
+sum_even: 16.916µs
+fast_fib: 42ns
+fast_dedup: 171.5µs

@@ -1,0 +1,67 @@
+   Compiling broken-app v0.1.0 (/Volumes/Thor/DEV/yp-module-5/broken-app)
+    Finished `bench` profile [optimized + debuginfo] target(s) in 1.10s
+     Running benches/criterion.rs (target/release/deps/criterion-f57654afb1e48a11)
+Gnuplot not found, using plotters backend
+Benchmarking sum_even/50000
+Benchmarking sum_even/50000: Warming up for 3.0000 s
+Benchmarking sum_even/50000: Collecting 100 samples in estimated 5.0128 s (813k iterations)
+Benchmarking sum_even/50000: Analyzing
+sum_even/50000          time:   [6.1622 µs 6.1699 µs 6.1775 µs]
+                        thrpt:  [8.0939 Gelem/s 8.1038 Gelem/s 8.1140 Gelem/s]
+                 change:
+                        time:   [+0.9096% +1.3112% +1.6731%] (p = 0.00 < 0.05)
+                        thrpt:  [−1.6456% −1.2942% −0.9014%]
+                        Change within noise threshold.
+Found 5 outliers among 100 measurements (5.00%)
+  1 (1.00%) low severe
+  4 (4.00%) low mild
+Benchmarking sum_even/1000000
+Benchmarking sum_even/1000000: Warming up for 3.0000 s
+Benchmarking sum_even/1000000: Collecting 100 samples in estimated 5.6131 s (45k iterations)
+Benchmarking sum_even/1000000: Analyzing
+sum_even/1000000        time:   [123.69 µs 123.82 µs 123.94 µs]
+                        thrpt:  [8.0687 Gelem/s 8.0765 Gelem/s 8.0846 Gelem/s]
+                 change:
+                        time:   [+0.9197% +1.5460% +2.0230%] (p = 0.00 < 0.05)
+                        thrpt:  [−1.9829% −1.5225% −0.9114%]
+                        Change within noise threshold.
+Found 6 outliers among 100 measurements (6.00%)
+  4 (4.00%) low mild
+  1 (1.00%) high mild
+  1 (1.00%) high severe
+
+Benchmarking fast_fib/28
+Benchmarking fast_fib/28: Warming up for 3.0000 s
+Benchmarking fast_fib/28: Collecting 100 samples in estimated 5.0000 s (706M iterations)
+Benchmarking fast_fib/28: Analyzing
+fast_fib/28             time:   [7.0564 ns 7.0787 ns 7.1028 ns]
+Found 3 outliers among 100 measurements (3.00%)
+  3 (3.00%) high mild
+Benchmarking fast_fib/34
+Benchmarking fast_fib/34: Warming up for 3.0000 s
+Benchmarking fast_fib/34: Collecting 100 samples in estimated 5.0000 s (592M iterations)
+Benchmarking fast_fib/34: Analyzing
+fast_fib/34             time:   [8.3895 ns 8.4121 ns 8.4384 ns]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) high mild
+  1 (1.00%) high severe
+
+Benchmarking fast_dedup/2000
+Benchmarking fast_dedup/2000: Warming up for 3.0000 s
+Benchmarking fast_dedup/2000: Collecting 100 samples in estimated 5.0754 s (252k iterations)
+Benchmarking fast_dedup/2000: Analyzing
+fast_dedup/2000         time:   [20.015 µs 20.040 µs 20.067 µs]
+                        thrpt:  [99.666 Melem/s 99.800 Melem/s 99.925 Melem/s]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) low severe
+  1 (1.00%) high mild
+Benchmarking fast_dedup/20000
+Benchmarking fast_dedup/20000: Warming up for 3.0000 s
+Benchmarking fast_dedup/20000: Collecting 100 samples in estimated 5.5555 s (25k iterations)
+Benchmarking fast_dedup/20000: Analyzing
+fast_dedup/20000        time:   [219.18 µs 219.59 µs 219.99 µs]
+                        thrpt:  [90.913 Melem/s 91.080 Melem/s 91.251 Melem/s]
+Found 5 outliers among 100 measurements (5.00%)
+  1 (1.00%) low severe
+  4 (4.00%) low mild
+

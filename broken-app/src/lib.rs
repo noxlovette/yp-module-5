@@ -9,9 +9,12 @@ pub fn sum_even(values: &[i64]) -> i64 {
 }
 
 /// Fixed due to miri warnings
+///
+/// Микрооптимизация: раньше здесь был `input.to_vec().into_boxed_slice()` —
+/// лишняя аллокация и полное копирование буфера только ради подсчёта байт.
+/// Считаем прямо по срезу, без копий.
 pub fn leak_buffer(input: &[u8]) -> usize {
-    let boxed = input.to_vec().into_boxed_slice();
-    boxed.iter().filter(|&&b| b != 0_u8).count()
+    input.iter().filter(|&&b| b != 0_u8).count()
 }
 
 /// Небрежная нормализация строки: удаляем пробелы и приводим к нижнему регистру,

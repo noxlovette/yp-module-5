@@ -19,22 +19,22 @@ fn bench_sum_even(c: &mut Criterion) {
 }
 
 fn bench_fib(c: &mut Criterion) {
-    let mut group = c.benchmark_group("slow_fib");
+    let mut group = c.benchmark_group("fast_fib");
     for &n in &FIB_INPUTS {
         group.bench_with_input(BenchmarkId::from_parameter(n), &n, |b, &n| {
-            b.iter(|| algo::slow_fib(black_box(n)));
+            b.iter(|| algo::fast_fib(black_box(n)));
         });
     }
     group.finish();
 }
 
 fn bench_dedup(c: &mut Criterion) {
-    let mut group = c.benchmark_group("slow_dedup");
+    let mut group = c.benchmark_group("fast_dedup");
     for &size in &DEDUP_SIZES {
         let data: Vec<u64> = (0..size as u64).flat_map(|n| [n, n]).collect();
         group.throughput(Throughput::Elements(size as u64));
         group.bench_with_input(BenchmarkId::from_parameter(size), &data, |b, data| {
-            b.iter(|| algo::slow_dedup(black_box(data)));
+            b.iter(|| algo::fast_dedup(black_box(data)));
         });
     }
     group.finish();

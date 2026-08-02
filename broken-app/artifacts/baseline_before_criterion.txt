@@ -1,0 +1,61 @@
+   Compiling broken-app v0.1.0 (/Volumes/Thor/DEV/yp-module-5/broken-app)
+    Finished `bench` profile [optimized + debuginfo] target(s) in 0.88s
+     Running benches/criterion.rs (target/release/deps/criterion-f57654afb1e48a11)
+Gnuplot not found, using plotters backend
+Benchmarking sum_even/50000
+Benchmarking sum_even/50000: Warming up for 3.0000 s
+Benchmarking sum_even/50000: Collecting 100 samples in estimated 5.0172 s (828k iterations)
+Benchmarking sum_even/50000: Analyzing
+sum_even/50000          time:   [6.0436 µs 6.0571 µs 6.0708 µs]
+                        thrpt:  [8.2362 Gelem/s 8.2548 Gelem/s 8.2732 Gelem/s]
+Found 7 outliers among 100 measurements (7.00%)
+  1 (1.00%) low mild
+  3 (3.00%) high mild
+  3 (3.00%) high severe
+Benchmarking sum_even/1000000
+Benchmarking sum_even/1000000: Warming up for 3.0000 s
+Benchmarking sum_even/1000000: Collecting 100 samples in estimated 5.5272 s (45k iterations)
+Benchmarking sum_even/1000000: Analyzing
+sum_even/1000000        time:   [122.00 µs 122.37 µs 122.87 µs]
+                        thrpt:  [8.1386 Gelem/s 8.1717 Gelem/s 8.1968 Gelem/s]
+Found 6 outliers among 100 measurements (6.00%)
+  2 (2.00%) low severe
+  2 (2.00%) low mild
+  1 (1.00%) high mild
+  1 (1.00%) high severe
+
+Benchmarking slow_fib/28
+Benchmarking slow_fib/28: Warming up for 3.0000 s
+Benchmarking slow_fib/28: Collecting 100 samples in estimated 6.3184 s (10k iterations)
+Benchmarking slow_fib/28: Analyzing
+slow_fib/28             time:   [609.58 µs 611.64 µs 613.76 µs]
+Found 3 outliers among 100 measurements (3.00%)
+  1 (1.00%) high mild
+  2 (2.00%) high severe
+Benchmarking slow_fib/34
+Benchmarking slow_fib/34: Warming up for 3.0000 s
+Benchmarking slow_fib/34: Collecting 100 samples in estimated 5.4541 s (500 iterations)
+Benchmarking slow_fib/34: Analyzing
+slow_fib/34             time:   [10.897 ms 10.929 ms 10.961 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+Benchmarking slow_dedup/2000
+Benchmarking slow_dedup/2000: Warming up for 3.0000 s
+Benchmarking slow_dedup/2000: Collecting 100 samples in estimated 9.9093 s (10k iterations)
+Benchmarking slow_dedup/2000: Analyzing
+slow_dedup/2000         time:   [990.95 µs 995.32 µs 999.91 µs]
+                        thrpt:  [2.0002 Melem/s 2.0094 Melem/s 2.0183 Melem/s]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) low mild
+  1 (1.00%) high mild
+Benchmarking slow_dedup/20000
+Benchmarking slow_dedup/20000: Warming up for 3.0000 s
+
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 9.4s, or reduce sample count to 50.
+Benchmarking slow_dedup/20000: Collecting 100 samples in estimated 9.3720 s (100 iterations)
+Benchmarking slow_dedup/20000: Analyzing
+slow_dedup/20000        time:   [92.720 ms 93.081 ms 93.463 ms]
+                        thrpt:  [213.99 Kelem/s 214.87 Kelem/s 215.70 Kelem/s]
+Found 4 outliers among 100 measurements (4.00%)
+  4 (4.00%) high mild

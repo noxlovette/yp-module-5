@@ -30,6 +30,13 @@ fn normalize_simple() {
 }
 
 #[test]
+fn normalize_handles_tabs_and_newlines() {
+    assert_eq!(normalize("a\tb c"), "abc");
+    assert_eq!(normalize("a\nb\n\nc"), "abc");
+    assert_eq!(normalize("a    b"), "ab");
+}
+
+#[test]
 fn race_increment_is_correct() {
     let total = concurrency::race_increment(1_000, 4);
     assert_eq!(total, 4_000);

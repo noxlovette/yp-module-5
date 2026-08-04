@@ -1,6 +1,5 @@
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::thread;
-use std::time::Duration;
 
 static COUNTER: AtomicU64 = AtomicU64::new(0);
 
@@ -21,11 +20,7 @@ pub fn race_increment(iterations: usize, threads: usize) -> u64 {
     COUNTER.load(Ordering::SeqCst)
 }
 
-/// Раньше просто спало и читало устаревшее значение; теперь чтение
-/// само по себе синхронизировано через atomic, sleep оставлен как есть
-/// (искусственная задержка перед чтением — не источник некорректности).
 pub fn read_after_sleep() -> u64 {
-    thread::sleep(Duration::from_millis(10));
     COUNTER.load(Ordering::SeqCst)
 }
 

@@ -17,10 +17,9 @@ pub fn leak_buffer(input: &[u8]) -> usize {
     input.iter().filter(|&&b| b != 0_u8).count()
 }
 
-/// Небрежная нормализация строки: удаляем пробелы и приводим к нижнему регистру,
-/// но игнорируем повторяющиеся пробелы/табуляции внутри текста.
+/// Нормализация: убираем все виды пробельных символов и приводим к нижнему регистру.
 pub fn normalize(input: &str) -> String {
-    input.replace(' ', "").to_lowercase()
+    input.split_whitespace().collect::<String>().to_lowercase()
 }
 
 /// Logical errors fixed; Closes [#5](https://github.com/noxlovette/yp-module-5/issues/5)
